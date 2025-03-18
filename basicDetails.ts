@@ -1,0 +1,19 @@
+export default {
+    title:"Mustard",
+    links:[
+        {
+            name:"Home",
+            link:"/"
+        },
+        {
+            name:"Friends",
+            link:"/friends"
+        },{
+            name:"Notifications",
+            link:"/notifications"
+        },{
+            name:"You",
+            link:"/profile"
+        }
+    ]
+}
