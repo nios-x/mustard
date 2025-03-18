@@ -15,5 +15,19 @@ export default {
             name:"You",
             link:"/profile"
         }
-    ]
+    ],
+    authButtons:[{
+        name:"Login",
+        link:"/login"
+    },{
+        name:"Sign Up",
+        link:"/signup"
+    }],
+    unauthButtons:[{
+        name:"Profile",
+        link:"/profile"
+    },{
+        name:"Settings",
+        link:"/settings"
+    }]
 }
