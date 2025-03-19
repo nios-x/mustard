@@ -12,7 +12,7 @@ import { IoClose } from "react-icons/io5";
 import MobileDrawer from "./MobileDrawer";
 export default () => {
     const { mode, changeMode, token } = useMode();
-    const [menu, setMenu] = useState<boolean>(!true);
+    const [menu, setMenu] = useState<boolean>(true);
     const [mounted, setMounted] = useState<boolean>(false);
 
     useEffect(() => {
@@ -20,7 +20,9 @@ export default () => {
     }, []);
 
     if (!mounted) return null;
-
+    function closewin(){
+        setMenu(false)
+    }
     return (
         <div className="p-3  flex justify-between overflow-hidden">
             <div className="w-max themefont pl-2 text-[31px] font-medium ">
@@ -33,6 +35,7 @@ export default () => {
                         key={e.link}
                         className="px-5 py-1 hover:translate-y-2 hover:text-lg transition-[500] hover:bg-zinc-50 rounded-sm"
                         href={e.link}
+                        
                     >
                         {e.name}
                     </Link>
@@ -61,7 +64,7 @@ export default () => {
                 className={`fixed inset-0 bg-zinc-100 lg:hidden md:hidden slide ${menu ? "showslide" : ""
                     }`}
             >
-                <MobileDrawer links={basicDetails.links} token={token} authButtons={basicDetails.authButtons} unauthButtons={basicDetails.unauthButtons} />
+                <MobileDrawer  links={basicDetails.links} token={token} authButtons={basicDetails.authButtons} unauthButtons={basicDetails.unauthButtons} />
             </div>
 
         </div>
