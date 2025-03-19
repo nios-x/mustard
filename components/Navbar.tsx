@@ -9,10 +9,10 @@ import { LuSunDim } from "react-icons/lu";
 import { PiMoonStarsDuotone } from "react-icons/pi";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
-
+import MobileDrawer from "./MobileDrawer";
 export default () => {
     const { mode, changeMode, token } = useMode();
-    const [menu, setMenu] = useState<boolean>(true);
+    const [menu, setMenu] = useState<boolean>(!true);
     const [mounted, setMounted] = useState<boolean>(false);
 
     useEffect(() => {
@@ -22,9 +22,9 @@ export default () => {
     if (!mounted) return null;
 
     return (
-        <div className="p-3 flex justify-between overflow-hidden">
-            <div className="w-max themefont text-3xl">
-                Mustard
+        <div className="p-3  flex justify-between overflow-hidden">
+            <div className="w-max themefont pl-2 text-[31px] font-medium ">
+                Mustard.
             </div>
 
             <div className="w-max mt-1 text-md hidden lg:flex md:flex">
@@ -51,17 +51,19 @@ export default () => {
             </div>
 
             <Button
-                className="absolute top-2 right-2 z-40 lg:hidden md:hidden rounded-full p-2 text-xl"
+                className="absolute top-4 right-5 z-40 text-2xl scale-125 lg:hidden md:hidden rounded-full py-5 "
                 onClick={() => setMenu(!menu)}
             >
-                {menu ? <HiOutlineMenuAlt3 /> : <IoClose />}
+                {menu ? <HiOutlineMenuAlt3 className="scale-125" /> : <IoClose className="scale-125" />}
             </Button>
 
             <div
-                className={`w-screen h-screen bg-zinc-100 absolute lg:hidden md:hidden top-0 left-0 slide ${
-                    menu ? "showslide" : ""
-                }`}
-            ></div>
+                className={`fixed inset-0 bg-zinc-100 lg:hidden md:hidden slide ${menu ? "showslide" : ""
+                    }`}
+            >
+                <MobileDrawer links={basicDetails.links} token={token} authButtons={basicDetails.authButtons} unauthButtons={basicDetails.unauthButtons} />
+            </div>
+
         </div>
     );
 };
