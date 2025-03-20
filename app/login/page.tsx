@@ -1,24 +1,120 @@
-import React from 'react'
-import Heading from '@/components/Heading'
-import { Button } from '@/components/ui/button';
-import { Input } from "@/components/ui/input"
-import { FaUnlock } from "react-icons/fa6";
-import { Label } from "@/components/ui/label"
-
+"use client";
+import Heading from "@/components/Heading";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { FaLock } from "react-icons/fa6";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "@/components/Input.css"
 const Page = () => {
+    const [form, setForm] = useState({ username: "", email: "", phone: "", name: "" });
+    const [form2, setForm2] = useState({ password: "", rpassword: "" });
+    const [form3, setForm3] = useState({ otp: "" });
+    const [userid, setUserId] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [stage, setStage] = useState<number>(1);
+    const router = useRouter();
+
+    useEffect(() => {
+        if (stage === 4) {
+            setTimeout(() => router.push("/login"), 1000);
+        }
+    }, [stage]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm({ ...form, [e.target.name]: e.target.value });
+    };
+    const handleChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm2({ ...form2, [e.target.name]: e.target.value });
+    };
+    const handleChange3 = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm3({ ...form3, [e.target.name]: e.target.value });
+    };
+    const submitData = async (e: any) => {
+        e.preventDefault();
+        let suffixurl;
+        let body;
+        if (stage === 1) {
+            suffixurl = "stage-1";
+            body = { ...form };
+        } else if (stage === 2) {
+            suffixurl = "stage-2";
+            body = { password: form2.password, rpassword: form2.rpassword };
+        } else if (stage === 3) {
+            suffixurl = "stage-3";
+            body = { otp: form3.otp };
+        }
+
+        try {
+            const response = await fetch(`/api/signup/${suffixurl}`, {
+                method: "POST",
+                body: JSON.stringify({ ...body, userid }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            setForm2({password:"", rpassword:""})
+            setForm3({otp:""})
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.error) {
+                toast.error(data.error);
+            }
+            if (data && data.userid) {
+                setUserId(data.userid);
+            }
+            if (data && data.token) {
+                localStorage.setItem("mustard-tkn",data.token)
+            }
+            if (data && data.stage) {
+                setStage(data.stage);
+            }
+        } catch (error) {
+            console.error("Error submitting data:", error);
+            toast.error("Something went wrong. Please try again.");
+        }
+    };
+
     return (
         <div className='w-full flex justify-center '>
 
-        <div className='pt-8 border m-6 lg:w-1/3 md:w-1/3 rounded-2xl px-3'>
-            <Heading>Login <FaUnlock/></Heading>
-            <Label htmlFor='abc'/>
-            <Input id='abc'/>
-            <Label htmlFor='def'/>
-            <Input id='def'/>
+        <div className='pt-8 border m-6 lg:w-1/3 md:w-1/3 rounded-2xl px-3 pb-6'>
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} draggable pauseOnHover theme="dark" />
+            <Heading>
+                Login <FaLock className="pl-4" stroke="2px" />
+            </Heading>
+            <form onSubmit={submitData}>
+                    <div className="flex flex-col mx-7">
+                        <label className="pl-1 text-sm pt-3" htmlFor="username">Username</label>
+                        <Input id="username" className="focus:outline-0" value={form.username} onChange={handleChange} name="username" type="text" placeholder="Enter Username" required />
+                        
+                        <label className="pl-1 text-sm pt-3" htmlFor="name">Name</label>
+                        <Input id="name" className="focus:outline-0" value={form.name} onChange={handleChange} name="name" type="text" placeholder="Enter Name" required />
+                        
+                        <label className="pl-1 text-sm pt-3" htmlFor="email">Email</label>
+                        <Input id="email" className="focus:outline-0" value={form.email} onChange={handleChange} name="email" type="email" placeholder="Enter Email" required />
+                        
+                        <label className="pl-1 text-sm pt-3" htmlFor="phone">Phone</label>
+                        <Input id="phone" className="focus:outline-0" value={form.phone} onChange={handleChange} name="phone" type="number" placeholder="Enter Phone" required />
+                        
+                        <div className="flex items-center mt-3">
+                            <Checkbox id="terms" required />
+                            <Label className="pl-2 text-[12px]">Accept terms and conditions</Label>
+                        </div>
+                        
+                        <Button className="mt-5 p-5 font-bold" type="submit">Continue</Button>
+                    </div>
+            </form>
+        </div>
+        </div>
+    );
+};
 
-            <Button>Login</Button>
-        </div>
-        </div>
-    )
-}
-export default Page
+export default Page;
