@@ -68,13 +68,13 @@ const Page = () => {
     return (
         <div className='w-full flex justify-center '>
 
-        <div className='pt-8 border m-6 lg:w-1/3 md:w-1/3 rounded-2xl px-3 pb-6'>
+        <div className='pt-8 border w-full mt-6 mx-2 lg:w-1/3 md:w-1/3 rounded-2xl px-3 pb-6'>
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} draggable pauseOnHover theme="dark" />
             <Heading>
                 Login <FaLock className="pl-4" stroke="2px" />
             </Heading>
             <form onSubmit={submitData}>
-                    <div className="flex flex-col mx-7">
+                    <div className="flex flex-col mx-7 ">
                         <label className="pl-1 text-sm pt-3" htmlFor="username">Username</label>
                         <Input id="username" className="focus:outline-0" value={form.username} onChange={handleChange} name="username" type="text" placeholder="Enter Username" required />
                         
