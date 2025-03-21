@@ -11,6 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export default async function sendOTP(email: string, otp: string) {
+  console.log(email, otp)
   try {
     const info = await transporter.sendMail({
       from: '"Mustard 👻" <devnios7@gmail.com>', // sender address

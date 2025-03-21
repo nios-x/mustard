@@ -46,6 +46,7 @@ async function handleSignUpRequest(b: any) {
 }
 
 async function handlePassword(b: any) {
+  console.log(b)
   if (!b.password || !b.userid || !b.rpassword) return NextResponse.json({ response: 'error', error: 'Missing fields' });
   if (b.password !== b.rpassword) return NextResponse.json({ response: 'error', error: 'Passwords do not match' });
 
@@ -53,11 +54,15 @@ async function handlePassword(b: any) {
     const hashedPassword = await bcrypt.hash(b.password, 10);
     const otp = otpGenerator();
     const otpExpiration = new Date(Date.now() + 5 * 60 * 1000);
+    const busersemail = await prisma.tempUserDB.findFirst({where:{
+      id:b.id
+    }})
+    if (!busersemail ) return NextResponse.json({ response: 'error', error: 'Some error in Here' });
 
     await prisma.tempUserDB.update({ where: { id: b.userid }, data: { password: hashedPassword, OTP: otp, OTPExpiration: otpExpiration } });
 
-    // Send OTP via mail
-    await mailer(b.email, otp);
+    // Send OTP via mail  
+    await mailer(busersemail.email as string, otp);
     console.log('OTP sent to:', b.email, 'OTP:', otp);
 
     return NextResponse.json({ response: 'success', stage: 3, userid: b.userid });
