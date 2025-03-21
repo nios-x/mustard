@@ -68,23 +68,22 @@ const Page = () => {
     return (
         <div className='w-full flex justify-center '>
 
-        <div className='pt-8 border w-full mt-6 mx-2 lg:w-1/3 md:w-1/3 rounded-2xl px-3 pb-6'>
+        <div className='pt-8 w-full border mt-6 mx-4 lg:w-1/3 md:w-1/3 rounded-2xl px-3 pb-6'>
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} draggable pauseOnHover theme="dark" />
-            <Heading>
+            <Heading >
                 Login <FaLock className="pl-4" stroke="2px" />
             </Heading>
             <form onSubmit={submitData}>
-                    <div className="flex flex-col mx-7 ">
+                    <div className="flex flex-col  ">
                         <label className="pl-1 text-sm pt-3" htmlFor="username">Username</label>
-                        <Input id="username" className="focus:outline-0" value={form.username} onChange={handleChange} name="username" type="text" placeholder="Enter Username" required />
+                        <Input id="username" className=" focus:outline-0 w-full" value={form.username} onChange={handleChange} name="username" type="text" placeholder="Enter Username" required />
                         
                 
                         <label className="pl-1 text-sm pt-3" htmlFor="password">Password</label>
-                        <Input id="password" className="focus:outline-0" value={form.password} onChange={handleChange} name="password" type="password" placeholder="Enter Password" required />
+                        <Input id="password" className=" focus:outline-0 w-full" value={form.password} onChange={handleChange} name="password" type="password" placeholder="Enter Password" required />
                   
-                        <div className="flex items-center mt-3">
-                            <Checkbox id="terms" required />
-                            <Label className="pl-2 text-[12px]">Accept terms and conditions</Label>
+                        <div className="flex items-end mt-3 w-full">
+                            <Label className="pl-2 text-[12px] w-max text-left">Forgot Password?</Label>
                         </div>
                         
                         <Button className="mt-5 p-5 font-bold" type="submit">Continue</Button>

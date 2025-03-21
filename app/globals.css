@@ -10,6 +10,22 @@
 *{
   font-family: poppins;
 }
+@font-face {
+  font-family: hell;
+  src: url("/fonts/Helvetica.ttf");
+}
+@font-face {
+  font-family: quic;
+  src: url("/fonts/Quicksand-VariableFont_wght.ttf");
+}
+.hel{
+  font-family: hell;
+}
+.qui{
+  font-family: quic;
+}
+
+
 .slide{
 
   transition: 0.3s;

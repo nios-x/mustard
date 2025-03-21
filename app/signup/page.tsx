@@ -85,25 +85,25 @@ const Page = () => {
     return (
         <div className='w-full flex justify-center '>
 
-        <div className='pt-8 w-full border mt-6 mx-2 lg:w-1/3 md:w-1/3 rounded-2xl px-3 pb-6'>
+        <div className='pt-8 w-full border mt-6 mx-4 lg:w-1/3 md:w-1/3 rounded-2xl px-3 pb-6'>
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} draggable pauseOnHover theme="dark" />
             <Heading>
                 Signup <FaLock className="pl-4" stroke="2px" />
             </Heading>
             <form onSubmit={submitData}>
                 {stage === 1 && (
-                    <div className="flex flex-col mx-7">
-                        <label className="pl-1 text-sm pt-3" htmlFor="username">Username</label>
-                        <Input id="username" className="focus:outline-0" value={form.username} onChange={handleChange} name="username" type="text" placeholder="Enter Username" required />
+                    <div className="flex flex-col ">
+                        <label className="pl-1 text-sm pt-2" htmlFor="username">Username</label>
+                        <Input id="username" className=" focus:outline-0 w-full" value={form.username} onChange={handleChange} name="username" type="text" placeholder="Enter Username" required />
                         
-                        <label className="pl-1 text-sm pt-3" htmlFor="name">Name</label>
-                        <Input id="name" className="focus:outline-0" value={form.name} onChange={handleChange} name="name" type="text" placeholder="Enter Name" required />
+                        <label className="pl-1 text-sm pt-2" htmlFor="name">Name</label>
+                        <Input id="name" className=" focus:outline-0 w-full" value={form.name} onChange={handleChange} name="name" type="text" placeholder="Enter Name" required />
                         
-                        <label className="pl-1 text-sm pt-3" htmlFor="email">Email</label>
-                        <Input id="email" className="focus:outline-0" value={form.email} onChange={handleChange} name="email" type="email" placeholder="Enter Email" required />
+                        <label className="pl-1 text-sm pt-2" htmlFor="email">Email</label>
+                        <Input id="email" className=" focus:outline-0 w-full" value={form.email} onChange={handleChange} name="email" type="email" placeholder="Enter Email" required />
                         
-                        <label className="pl-1 text-sm pt-3" htmlFor="phone">Phone</label>
-                        <Input id="phone" className="focus:outline-0" value={form.phone} onChange={handleChange} name="phone" type="number" placeholder="Enter Phone" required />
+                        <label className="pl-1 text-sm pt-2" htmlFor="phone">Phone</label>
+                        <Input id="phone" className=" focus:outline-0 w-full" value={form.phone} onChange={handleChange} name="phone" type="number" placeholder="Enter Phone" required />
                         
                         <div className="flex items-center mt-3">
                             <Checkbox id="terms" required />
