@@ -4,11 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react"
 import { FaLock } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "@/components/Input.css"
+import "@/components/Navbar.css"
 const Page = () => {
     const [form, setForm] = useState({ username: "", email: "", phone: "", name: "" });
     const [form2, setForm2] = useState({ password: "", rpassword: "" });
@@ -34,6 +36,7 @@ const Page = () => {
         setForm3({ ...form3, [e.target.name]: e.target.value });
     };
     const submitData = async (e: any) => {
+        setIsSubmitting(true)
         e.preventDefault();
         let suffixurl;
         let body;
@@ -76,23 +79,26 @@ const Page = () => {
             if (data && data.stage) {
                 setStage(data.stage);
             }
+            setIsSubmitting(false)
         } catch (error) {
             console.error("Error submitting data:", error);
             toast.error("Something went wrong. Please try again.");
+            setIsSubmitting(false)
         }
     };
 
     return (
-        <div className='w-full flex justify-center '>
+        <div className='w-full h-full flex justify-center '>
 
-        <div className='pt-8 w-full border mt-6 mx-4 lg:w-1/3 md:w-1/3 rounded-2xl px-3 pb-6'>
+        <div className='pt-14 w-full  h-full border mt-8 mx-4 lg:w-1/3 md:w-1/3 rounded-2xl px-3 pb-6'>
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} draggable pauseOnHover theme="dark" />
+            
             <Heading>
                 Signup <FaLock className="pl-4" stroke="2px" />
             </Heading>
-            <form onSubmit={submitData}>
+            <form  onSubmit={submitData}>
                 {stage === 1 && (
-                    <div className="flex flex-col ">
+                    <div className="flex flex-col h-full ">
                         <label className="pl-1 text-sm pt-2" htmlFor="username">Username</label>
                         <Input id="username" className=" focus:outline-0 w-full" value={form.username} onChange={handleChange} name="username" type="text" placeholder="Enter Username" required />
                         
@@ -110,29 +116,42 @@ const Page = () => {
                             <Label className="pl-2 text-[12px]">Accept terms and conditions</Label>
                         </div>
                         
-                        <Button className="mt-5 p-5 font-bold" type="submit">Continue</Button>
+                        <Button className="mt-5 p-5 font-bold" type="submit">{isSubmitting && <Loader2 className="animate-spin"/> } Continue</Button>
                     </div>
                 )}
                 {stage === 2 && (
-                    <div className="flex flex-col mx-7">
-                        <label className="pl-1 text-sm" htmlFor="password">Enter- Password</label>
-                        <Input id="password" value={form2.password} onChange={handleChange2} name="password" type="password" placeholder="Enter Password" required />
+                    <div className="flex flex-col mt-4">
+                        <label className="pl-1 text-sm pt-2" htmlFor="password">Enter- Password</label>
+                        <Input id="password" className="focus:outline-0 w-full" value={form2.password} onChange={handleChange2} name="password" type="password" placeholder="Enter Password" required />
 
-                        <label className="pl-1 mt-2 text-sm" htmlFor="rpassword">Confirm Password</label>
-                        <Input id="rpassword" value={form2.rpassword} onChange={handleChange2} name="rpassword" type="password" placeholder="Re-enter Password" required />
+                        <label className="pl-1 text-sm pt-2" htmlFor="rpassword">Confirm Password</label>
+                        <Input id="rpassword" className="focus:outline-0 w-full" value={form2.rpassword} onChange={handleChange2} name="rpassword" type="password" placeholder="Re-enter Password" required />
 
                         <Button disabled={isSubmitting} className="mt-5 p-5 font-bold" type="submit">Continue</Button>
                     </div>
                 )}
                 {stage === 3 && (
-                    <div className="flex flex-col mx-7">
-                        <label className="pl-1 text-sm" htmlFor="otp">Enter One Time Password</label>
-                        <Input id="otp" value={form3.otp} onChange={handleChange3} name="otp" type="number" placeholder="Enter OTP" required />
+                    <div className="flex flex-col mt-4">
+                        <label className="pl-1 text-sm pt-2" htmlFor="otp">Enter One Time Password</label>
+                        <Input id="otp" className="focus:outline-0 w-full" value={form3.otp} onChange={handleChange3} name="otp" type="number" placeholder="Enter OTP" required />
 
-                        <Button className="mt-5 p-5 font-bold" type="submit">Continue</Button>
+                        <Button className="mt-5 p-5 font-bold" type="submit">{isSubmitting && <Loader2 className="animate-spin"/> } Continue</Button>
                     </div>
                 )}
+                {stage ==4 && <div  className="text-center">
+                    <div className="mt-3 ">
+                        Please Wait <b> Redirecting... </b>
+                    </div>
+                    <div className="mb-6">
+                       Your Account Has Been Created.
+                    </div>
+
+                    </div>}
+                    
             </form>
+            <div className=" mt-4 themefont text-center text-[11px] font-medium ">
+                <span className="text-black">by </span>Mustard.
+            </div>
         </div>
         </div>
     );

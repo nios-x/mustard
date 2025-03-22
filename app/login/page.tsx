@@ -1,7 +1,7 @@
 "use client";
 import Heading from "@/components/Heading";
+import { Loader2 } from "lucide-react"
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa6";
@@ -11,13 +11,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "@/components/Input.css"
 const Page = () => {
     const [form, setForm] = useState({ username: "", password: "" });
-    const [userid, setUserId] = useState<string | null>(null);
     const [stage, setStage] = useState<number>(1);
     const router = useRouter();
-
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     useEffect(() => {
         if (stage === 2) {
-            setTimeout(() => router.push("/login"), 1000);
+            setTimeout(() => router.push("/"), 1000);
         }
     }, [stage]);
 
@@ -25,18 +24,20 @@ const Page = () => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
     const submitData = async (e: any) => {
+        setIsSubmitting(true)
         e.preventDefault();
         let suffixurl;
         let body;
         if (stage === 1) {
-            suffixurl = "stage-1";
+            suffixurl = "login-stage-1";
             body = { ...form };
         }
-
+        
         try {
+
             const response = await fetch(`/api/signup/${suffixurl}`, {
                 method: "POST",
-                body: JSON.stringify({ ...body, userid }),
+                body: JSON.stringify({ ...body }),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -50,18 +51,19 @@ const Page = () => {
             if (data.error) {
                 toast.error(data.error);
             }
-            if (data && data.userid) {
-                setUserId(data.userid);
-            }
             if (data && data.token) {
                 localStorage.setItem("mustard-tkn",data.token)
             }
             if (data && data.stage) {
                 setStage(data.stage);
             }
+            setIsSubmitting(false)
         } catch (error) {
             console.error("Error submitting data:", error);
+            setIsSubmitting(false)
             toast.error("Something went wrong. Please try again.");
+        }finally{
+            
         }
     };
 
@@ -85,10 +87,12 @@ const Page = () => {
                         <div className="flex items-end mt-3 w-full">
                             <Label className="pl-2 text-[12px] w-max text-left">Forgot Password?</Label>
                         </div>
-                        
-                        <Button className="mt-5 p-5 font-bold" type="submit">Continue</Button>
+                        <Button className="mt-5 p-5 font-bold" type="submit">{isSubmitting && <Loader2 className="animate-spin"/> }  Continue</Button>
                     </div>
             </form>
+            <div className=" mt-4 themefont text-center text-[11px] font-medium ">
+                <span className="text-black">by </span>Mustard.
+            </div>
         </div>
         </div>
     );

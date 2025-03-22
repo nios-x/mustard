@@ -22,15 +22,42 @@ export async function POST(request: any, { params }: { params: Promise<any> }) {
   if (stage === 'stage-1') return handleSignUpRequest(b);
   if (stage === 'stage-2') return handlePassword(b);
   if (stage === 'stage-3') return getSignUpData3(b);
-
+  if (stage === 'login-stage-1') return loginUser(b);
+  
   return NextResponse.json({ response: 'error', error: 'Invalid stage' });
 }
 
+async function loginUser(b:any){
+  if(!b.username) return NextResponse.json({response:"error", error:"Username not Provided"})
+    const user = await prisma.userDB.findFirst({where:{
+  username:b.username
+}})
+if(!user) return  NextResponse.json({response:"error", error:"User not Found"})
+  const isCorrect = await bcrypt.compare(b.password.trim(), user.password.trim());
+
+console.log(isCorrect)
+console.log("Stored Hash:", user.password);
+console.log("Provided Password:", b.password);
+console.log("Type of Stored Hash:", typeof user.password);
+console.log("Type of Provided Password:", typeof b.password);
+
+  if(isCorrect){
+    const token  = generateToken({id:user.id})
+
+    return NextResponse.json({token, stage:2})
+
+  }else{
+    return NextResponse.json({ response: 'error', error: 'Invalid Password' });
+  }
+
+
+}
+
+
 async function handleSignUpRequest(b: any) {
   try {
+    // await prisma.userDB.deleteMany({ where: { OR: [{ email: b.email }, { username: b.username }] } });
     await prisma.tempUserDB.deleteMany({ where: { OR: [{ email: b.email }, { username: b.username }] } });
-    await prisma.userDB.deleteMany({ where: { OR: [{ email: b.email }, { username: b.username }] } });
-
     const existingUserByUsername = await prisma.userDB.findFirst({ where: { username: b.username } });
     const existingUserByEmail = await prisma.userDB.findFirst({ where: { email: b.email } });
 
