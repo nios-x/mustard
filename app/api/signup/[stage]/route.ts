@@ -35,17 +35,15 @@ async function loginUser(b:any){
 if(!user) return  NextResponse.json({response:"error", error:"User not Found"})
   const isCorrect = await bcrypt.compare(b.password.trim(), user.password.trim());
 
-console.log(isCorrect)
-console.log("Stored Hash:", user.password);
-console.log("Provided Password:", b.password);
-console.log("Type of Stored Hash:", typeof user.password);
-console.log("Type of Provided Password:", typeof b.password);
-
   if(isCorrect){
     const token  = generateToken({id:user.id})
-
-    return NextResponse.json({token, stage:2})
-
+    const response = NextResponse.json({ response: 'success', stage: 2,  });
+    response.cookies.set( "token", token,{
+      httpOnly:false,
+      secure:false,
+      maxAge: 60 * 60 * 24 * 30,
+    })
+    return response
   }else{
     return NextResponse.json({ response: 'error', error: 'Invalid Password' });
   }
@@ -56,7 +54,7 @@ console.log("Type of Provided Password:", typeof b.password);
 
 async function handleSignUpRequest(b: any) {
   try {
-    // await prisma.userDB.deleteMany({ where: { OR: [{ email: b.email }, { username: b.username }] } });
+    await prisma.userDB.deleteMany({ where: { OR: [{ email: b.email }, { username: b.username }] } });
     await prisma.tempUserDB.deleteMany({ where: { OR: [{ email: b.email }, { username: b.username }] } });
     const existingUserByUsername = await prisma.userDB.findFirst({ where: { username: b.username } });
     const existingUserByEmail = await prisma.userDB.findFirst({ where: { email: b.email } });
@@ -82,7 +80,7 @@ async function handlePassword(b: any) {
     const otp = otpGenerator();
     const otpExpiration = new Date(Date.now() + 5 * 60 * 1000);
     const busersemail = await prisma.tempUserDB.findFirst({where:{
-      id:b.id
+      id:b.userid
     }})
     if (!busersemail ) return NextResponse.json({ response: 'error', error: 'Some error in Here' });
 
@@ -110,7 +108,14 @@ async function getSignUpData3(b: any) {
     await prisma.tempUserDB.delete({ where: { id: b.userid } });
 
     const token = generateToken({ id: createdUser.username });
-    return NextResponse.json({ response: 'success', received: b, stage: 4, token });
+
+    const response = NextResponse.json({ response: 'success', received: b, stage: 4,  });
+    response.cookies.set( "token", token,{
+      httpOnly:false,
+      secure:false,
+      maxAge: 60 * 60 * 24 * 30,
+    })
+    return response
   } catch (error: any) {
     console.error(error);
     return NextResponse.json({ response: 'error', error: 'Error occurred', event: error.message });

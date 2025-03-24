@@ -152,3 +152,14 @@
 button{
   cursor: pointer;
 }
+.themefont{
+  background: linear-gradient(108deg, red, orange);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.themefontrev{
+  background: linear-gradient(108deg, red, orange);
+  color: white;
+}

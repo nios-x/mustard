@@ -24,10 +24,10 @@ export default {
         link:"/signup"
     }],
     unauthButtons:[{
-        name:"Profile",
-        link:"/profile"
+        name:"Preferences",
+        link:"/preferences"
     },{
-        name:"Settings",
-        link:"/settings"
+        name:"Logout",
+        link:"/logout"
     }]
 }

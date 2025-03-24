@@ -42,8 +42,8 @@ export default () => {
                 ))}
             </div>
 
-            <div className="w-max hidden lg:flex gap-2 md:flex relative">
-                <Button onClick={() => changeMode()}>
+            <div className="w-max hidden lg:flex gap-2  md:flex relative">
+                <Button className="hidden" onClick={() => changeMode()}>
                     {mode ? <PiMoonStarsDuotone /> : <LuSunDim />}
                 </Button>
                 {(token == null ? basicDetails.authButtons : basicDetails.unauthButtons).map((e) => (

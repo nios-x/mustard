@@ -18,6 +18,10 @@ const ModeProvider = ({ children }: { children: ReactNode; }) => {
         setMode((prevMode) => !prevMode);
     };
     useEffect(() => {
+        const token = document.cookie.split("; ").find((e)=>(e.startsWith("token=")))?.split("=")[1];
+        if(token){
+            setToken(token)
+        }
         const lenis = new Lenis();
         function raf(time: any) {
             lenis.raf(time);

@@ -6,17 +6,15 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa6";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "@/components/Input.css"
 const Page = () => {
     const [form, setForm] = useState({ username: "", password: "" });
     const [stage, setStage] = useState<number>(1);
-    const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     useEffect(() => {
         if (stage === 2) {
-            setTimeout(() => router.push("/"), 1000);
+            setTimeout(() => window.location.href = "/", 1000);
         }
     }, [stage]);
 
@@ -32,9 +30,7 @@ const Page = () => {
             suffixurl = "login-stage-1";
             body = { ...form };
         }
-        
         try {
-
             const response = await fetch(`/api/signup/${suffixurl}`, {
                 method: "POST",
                 body: JSON.stringify({ ...body }),
@@ -50,9 +46,6 @@ const Page = () => {
 
             if (data.error) {
                 toast.error(data.error);
-            }
-            if (data && data.token) {
-                localStorage.setItem("mustard-tkn",data.token)
             }
             if (data && data.stage) {
                 setStage(data.stage);
