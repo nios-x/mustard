@@ -1,6 +1,6 @@
 import Link from "next/link"
 export default function(props:any){
-    return<div className="h-full px-7">
+    return<div className="h-full px-7 z-[9999]">
         <h1 className="mt-18 text-5xl text-zinc-600 ">
             Settings
         </h1>
