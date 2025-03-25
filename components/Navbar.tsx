@@ -28,7 +28,6 @@ export default () => {
             <div className="w-max themefont pl-2 text-[31px] font-medium ">
                 Mustard.
             </div>
-
             <div className="w-max mt-1 text-md hidden lg:flex md:flex">
                 {basicDetails.links.map((e) => (
                     <Link
@@ -61,10 +60,10 @@ export default () => {
             </Button>
 
             <div
-                className={`fixed inset-0 bg-zinc-100 lg:hidden md:hidden slide ${menu ? "showslide" : ""
+                className={`fixed inset-0 bg-zinc-100 z-30 lg:hidden md:hidden slide ${menu ? "showslide" : ""
                     }`}
             >
-                <MobileDrawer  links={basicDetails.links} token={token} authButtons={basicDetails.authButtons} unauthButtons={basicDetails.unauthButtons} />
+                <MobileDrawer  closewin={closewin}  links={basicDetails.links} token={token} authButtons={basicDetails.authButtons} unauthButtons={basicDetails.unauthButtons} />
             </div>
 
         </div>
