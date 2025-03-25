@@ -54,7 +54,7 @@ if(!user) return  NextResponse.json({response:"error", error:"User not Found"})
 
 async function handleSignUpRequest(b: any) {
   try {
-    await prisma.userDB.deleteMany({ where: { OR: [{ email: b.email }, { username: b.username }] } });
+    // await prisma.userDB.deleteMany({ where: { OR: [{ email: b.email }, { username: b.username }] } });
     await prisma.tempUserDB.deleteMany({ where: { OR: [{ email: b.email }, { username: b.username }] } });
     const existingUserByUsername = await prisma.userDB.findFirst({ where: { username: b.username } });
     const existingUserByEmail = await prisma.userDB.findFirst({ where: { email: b.email } });
