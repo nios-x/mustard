@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Mustard – A Social Media App for Everyone!
 
-## Getting Started
+**Mustard** is an open-source social media platform where anyone can contribute and share their voice. No gatekeeping, no exclusivity—just pure engagement and collaboration.
 
-First, run the development server:
+## 🌟 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+✅ **Open Collaboration** – Anyone can contribute and interact.  
+✅ **Community-Driven Features** – Users influence updates and improvements.  
+✅ **Personalized Experience** – Smart feeds tailored to your interests.  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎥 Live Demo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🌍 [Mustard Live Demo](https://mustard7.onrender.com/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔗 Repository
 
-## Learn More
+📌 GitHub: [Mustard Repository](https://github.com/nios-x/mustard)
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠 Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Frontend:** Next.js, Tailwind CSS, ShadCN, GSAP
+- **Backend:** PostgreSQL (Prisma)
+- **Language:** TypeScript
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📦 Installation & Setup
 
-## Deploy on Vercel
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/nios-x/mustard.git
+   cd mustard
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **Set up environment variables:**
+   - Create a `.env` file in the root directory and add your configurations.
+
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+   The app should now be running on `http://localhost:3000`.
+
+## 🛠 Contributing
+
+We welcome contributions! To get started:
+1. Fork the repository.
+2. Create a new branch (`feature-branch-name`).
+3. Make your changes and commit them.
+4. Push to your fork and submit a pull request.
+
+## 📜 License
+
+This project is open-source under the **MIT License**.
+
+## 💡 Feedback & Suggestions
+
+We’d love to hear your thoughts! Share your ideas by opening an issue or starting a discussion. Let’s build something amazing together! 🚀
+
+---
+
+#Mustard #SocialMedia #OpenSource #Innovation #NextJS
