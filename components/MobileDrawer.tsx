@@ -1,4 +1,4 @@
-"uselient"
+"use client"
 import Link from "next/link"
 export default function(props:any){
     return<div className="h-full px-7 ">
