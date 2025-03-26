@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+
 import {
     Drawer,
     DrawerClose,
@@ -43,11 +44,11 @@ export default function CreateAPost() {
 
             const data = await response.json();
             if (data.response) toast(data.response);
-                setIsSubmitting(false);
-                setIsDrawerOpen(false); // Close drawer after posting
-                setDisableTrigger(false); // Prevent reopening
-                setPostText(""); // Reset post input
-            
+            setIsSubmitting(false);
+            setIsDrawerOpen(false); // Close drawer after posting
+            setDisableTrigger(false); // Prevent reopening
+            setPostText(""); // Reset post input
+
         } catch (e: any) {
             toast(e.message);
             setIsSubmitting(false);
@@ -58,6 +59,7 @@ export default function CreateAPost() {
         toast("Welcome back to Mustard.");
     }, []);
 
+ 
     return (
         <div className="flex justify-center">
             <Toaster />
