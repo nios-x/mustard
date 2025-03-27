@@ -29,7 +29,7 @@ export async function POST(request: any, { params }: { params: Promise<any> }) {
 
 async function loginUser(b:any){
   if(!b.username) return NextResponse.json({response:"error", error:"Username not Provided"})
-    const user = await prisma.userDB.findFirst({where:{
+    const user = await prisma.user.findFirst({where:{
   username:b.username
 }})
 if(!user) return  NextResponse.json({response:"error", error:"User not Found"})
@@ -54,15 +54,15 @@ if(!user) return  NextResponse.json({response:"error", error:"User not Found"})
 
 async function handleSignUpRequest(b: any) {
   try {
-    // await prisma.userDB.deleteMany({ where: { OR: [{ email: b.email }, { username: b.username }] } });
-    await prisma.tempUserDB.deleteMany({ where: { OR: [{ email: b.email }, { username: b.username }] } });
-    const existingUserByUsername = await prisma.userDB.findFirst({ where: { username: b.username } });
-    const existingUserByEmail = await prisma.userDB.findFirst({ where: { email: b.email } });
+    // await prisma.user.deleteMany({ where: { OR: [{ email: b.email }, { username: b.username }] } });
+    await prisma.tempUser.deleteMany({ where: { OR: [{ email: b.email }, { username: b.username }] } });
+    const existingUserByUsername = await prisma.user.findFirst({ where: { username: b.username } });
+    const existingUserByEmail = await prisma.user.findFirst({ where: { email: b.email } });
 
     if (existingUserByUsername) return NextResponse.json({ response: 'error', error: 'User exists with the same username' });
     if (existingUserByEmail) return NextResponse.json({ response: 'error', error: 'User exists with the same email' });
 
-    const user = await prisma.tempUserDB.create({ data: { name: b.name, username: b.username, email: b.email, phone: b.phone } });
+    const user = await prisma.tempUser.create({ data: { name: b.name, username: b.username, email: b.email, phone: b.phone } });
     return NextResponse.json({ response: 'success', received: b, stage: 2, userid: user.id });
   } catch (error: any) {
     console.error(error);
@@ -79,12 +79,12 @@ async function handlePassword(b: any) {
     const hashedPassword = await bcrypt.hash(b.password, 10);
     const otp = otpGenerator();
     const otpExpiration = new Date(Date.now() + 5 * 60 * 1000);
-    const busersemail = await prisma.tempUserDB.findFirst({where:{
+    const busersemail = await prisma.tempUser.findFirst({where:{
       id:b.userid
     }})
     if (!busersemail ) return NextResponse.json({ response: 'error', error: 'Some error in Here' });
 
-    await prisma.tempUserDB.update({ where: { id: b.userid }, data: { password: hashedPassword, OTP: otp, OTPExpiration: otpExpiration } });
+    await prisma.tempUser.update({ where: { id: b.userid }, data: { password: hashedPassword, OTP: otp, OTPExpiration: otpExpiration } });
 
     // Send OTP via mail  
     await mailer(busersemail.email as string, otp);
@@ -99,13 +99,13 @@ async function handlePassword(b: any) {
 
 async function getSignUpData3(b: any) {
   try {
-    const user = await prisma.tempUserDB.findFirst({ where: { id: b.userid } });
+    const user = await prisma.tempUser.findFirst({ where: { id: b.userid } });
     if (!user) return NextResponse.json({ response: 'error', error: 'User not found' });
     if (user.OTP !== b.otp) return NextResponse.json({ response: 'error', error: 'Invalid OTP' });
     if (user.OTPExpiration && new Date() > user.OTPExpiration) return NextResponse.json({ response: 'error', error: 'OTP expired', stage: 1 });
 
-    const createdUser = await prisma.userDB.create({ data: { username: user.username, email: user.email, password: user.password as string, name: user.name, phone: user.phone } });
-    await prisma.tempUserDB.delete({ where: { id: b.userid } });
+    const createdUser = await prisma.user.create({ data: { username: user.username, email: user.email, password: user.password as string, name: user.name, phone: user.phone } });
+    await prisma.tempUser.delete({ where: { id: b.userid } });
 
     const token = generateToken({ id: createdUser.username });
 
