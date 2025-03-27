@@ -39,7 +39,7 @@ export default function CreateAPost() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ text: postText }),
+                body: JSON.stringify({ content: postText }),
             });
 
             const data = await response.json();
