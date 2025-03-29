@@ -12,7 +12,7 @@ function otpGenerator(): string {
 
 function generateToken(payload: object): string {
   const secret = process.env.JWT_SECRET || 'your_secret_key';
-  return jwt.sign(payload, secret, { expiresIn: '1h' });
+  return jwt.sign(payload, secret, { expiresIn: '3m' });
 }
 
 export async function POST(request: any, { params }: { params: Promise<any> }) {
@@ -41,7 +41,7 @@ if(!user) return  NextResponse.json({response:"error", error:"User not Found"})
     response.cookies.set( "token", token,{
       httpOnly:false,
       secure:false,
-      maxAge: 60 * 60 * 24 * 30,
+      maxAge: 60 * 60 * 24 * 90,
     })
     return response
   }else{
@@ -113,7 +113,7 @@ async function getSignUpData3(b: any) {
     response.cookies.set( "token", token,{
       httpOnly:false,
       secure:false,
-      maxAge: 60 * 60 * 24 * 30,
+      maxAge: 60 * 60 * 24 * 90,
     })
     return response
   } catch (error: any) {

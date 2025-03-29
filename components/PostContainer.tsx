@@ -37,7 +37,7 @@ export default function PostContainer(props: any) {
 
               {new Date(e.createdAt).toDateString()} at {new Date(e.createdAt).toDateString()}
             </div>
-            <div className='flex justify-around mt-5 text-sm'>
+            <div className='flex justify-around mt-5 text-sm bg-zinc-500'>
               <span>Like</span>
               <span>Comments</span>
               <span>Share</span>
