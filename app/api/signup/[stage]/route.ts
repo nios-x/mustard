@@ -1,9 +1,10 @@
-import prisma from '@/lib/prismaClient'; 
 import bcrypt from 'bcrypt';
 import mailer from '@/components/mailer';
 import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
 
+const prisma = new PrismaClient();
 
 function otpGenerator(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
