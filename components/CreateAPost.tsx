@@ -44,6 +44,7 @@ export default function CreateAPost() {
 
             const data = await response.json();
             if (data.response) toast(data.response);
+
             setIsSubmitting(false);
             setIsDrawerOpen(false); // Close drawer after posting
             setDisableTrigger(false); // Prevent reopening

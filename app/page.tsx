@@ -15,6 +15,7 @@ export default function Home() {
 
 
   useGSAP(() => {
+    
     const tl = gsap.timeline({ repeat: -1, })
     tl.from('.box', { x: "-100vw", stagger: 0.2, duration: 0.5 });
     tl.to(".box", { opacity: 0, stagger: 0.2, duration: 0.5 })
@@ -26,9 +27,8 @@ export default function Home() {
         method: "GET"
       })
       const data = await response.json()
-      console.log(data.posts)
       setIsloading(false)
-      setPosts(data.posts)
+      setPosts(data.posts || [])
     })()
   }, [])
   return (
