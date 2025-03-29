@@ -24,7 +24,8 @@ export default () => {
         setMenu(false)
     }
     return (
-        <div className="p-3  flex justify-between overflow-hidden">
+        <div className="p-3 sticky top-0 w-full bg flex justify-between overflow-hidden">
+    <div className="absolute inset-0 backdrop-blur-2xl -z-10"></div>
             <div className="w-max themefont pl-2 text-[31px] font-medium ">
                 Mustard.
             </div>
