@@ -1,16 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `tempUserDB` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `userDB` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-DROP TABLE "tempUserDB";
-
--- DropTable
-DROP TABLE "userDB";
-
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
