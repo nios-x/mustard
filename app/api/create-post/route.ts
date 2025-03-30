@@ -77,14 +77,22 @@ export async function POST(request: Request) {
 
         const userId = (decodedToken as JwtPayload).id;  // Explicitly cast as JwtPayload
 
-        await prisma.post.create({
+        const postcreated = await prisma.post.create({
             data: {
                 userId,
                 content: requestData.content.trim(),
             },
+            include: {
+                user: {
+                    select: {
+                        name: true, 
+                        username: true, 
+                    },
+                },
+            },
         });
 
-        return NextResponse.json({ response: "Post created successfully!" }, { status: 201 });
+        return NextResponse.json({ response: "Post created successfully!", postcreated }, { status: 201 });
 
     } catch (error) {
         console.error("Error creating post:", error);

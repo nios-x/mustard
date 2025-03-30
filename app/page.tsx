@@ -15,11 +15,11 @@ export default function Home() {
 
 
   useGSAP(() => {
-    
     const tl = gsap.timeline({ repeat: -1, })
     tl.from('.box', { x: "-100vw", stagger: 0.2, duration: 0.5 });
     tl.to(".box", { opacity: 0, stagger: 0.2, duration: 0.5 })
   });
+  
   useEffect(() => {
     (async () => {
       const response = await fetch("/api/create-post", {
@@ -33,7 +33,7 @@ export default function Home() {
   }, [])
   return (
     <div>
-      <CreateAPost />
+      <CreateAPost posts={posts} setPosts={setPosts} />
       
       { isLoading && <><div className="flex flex-col space-y-3 justify-center items-center mt-8">
         <Skeleton className="box h-[180px] w-[85vw] rounded-xl" />

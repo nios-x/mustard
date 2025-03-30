@@ -12,7 +12,7 @@ function otpGenerator(): string {
 
 function generateToken(payload: object): string {
   const secret = process.env.JWT_SECRET || 'your_secret_key';
-  return jwt.sign(payload, secret, { expiresIn: '3m' });
+  return jwt.sign(payload, secret, { expiresIn: '90d' });
 }
 
 export async function POST(request: any, { params }: { params: Promise<any> }) {

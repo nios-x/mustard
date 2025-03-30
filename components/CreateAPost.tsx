@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-
 import {
     Drawer,
     DrawerClose,
@@ -25,7 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 
-export default function CreateAPost() {
+export default function CreateAPost(props:any) {
     const [postText, setPostText] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -44,7 +43,9 @@ export default function CreateAPost() {
 
             const data = await response.json();
             if (data.response) toast(data.response);
-
+            if(data.postcreated){
+                props.setPosts([data.postcreated, ...props.posts])
+            }
             setIsSubmitting(false);
             setIsDrawerOpen(false); // Close drawer after posting
             setDisableTrigger(false); // Prevent reopening
