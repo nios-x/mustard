@@ -1,25 +1,17 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { tokenDecoder, tokenVerifier } from "@/components/tokenmethods";
 import { JwtPayload } from "jsonwebtoken"; 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
+import AuthMiddleWare from "@/lib/authmiddleware";
 
 const prisma = new PrismaClient();
+
 export async function GET(request: Request) {
     try {
-        const cookieStore = await cookies();
-        const token = cookieStore.get("token")?.value;
-        
-        if (!token) {
-            return NextResponse.json({ response: "Kindly Login or Sign Up to View Posts" }, { status: 401 });
-        }
-        if (!tokenVerifier(token)) {
-            return NextResponse.json({ response: "Invalid or expired token" }, { status: 403 });
-        }
-        
-        const decodedToken = tokenDecoder(token);
-        if (!decodedToken || typeof decodedToken !== "object" || !("id" in decodedToken)) {
-            return NextResponse.json({ response: "Invalid token data" }, { status: 403 });
+        let decodedToken;
+        try {
+            decodedToken = await AuthMiddleWare();
+        } catch (e:any) {
+            return NextResponse.json({ response: e.message }, { status: 400 });
         }
 
         const { searchParams } = new URL(request.url);
@@ -37,16 +29,14 @@ export async function GET(request: Request) {
             include: {
                 user: {
                     select: {
-                        name: true, 
-                        username: true, 
+                        name: true,
+                        username: true,
                     },
                 },
             },
-        
         });
 
         return NextResponse.json({ response: "success", posts }, { status: 200 });
-
     } catch (error) {
         console.error("Error fetching posts:", error);
         return NextResponse.json({ response: "An unexpected error occurred" }, { status: 500 });
@@ -60,22 +50,14 @@ export async function POST(request: Request) {
             return NextResponse.json({ response: "Post content cannot be empty" }, { status: 400 });
         }
 
-        const cookieStore = await cookies();
-        const token = cookieStore.get("token")?.value;
-
-        if (!token) {
-            return NextResponse.json({ response: "Kindly Login or Sign Up to Create Posts" }, { status: 401 });
-        }
-        if (!tokenVerifier(token)) {
-            return NextResponse.json({ response: "Invalid or expired token" }, { status: 403 });
+        let decodedToken;
+        try {
+            decodedToken = await AuthMiddleWare();
+        } catch (e:any) {
+            return NextResponse.json({ response: e.message }, { status: 400 });
         }
 
-        const decodedToken = tokenDecoder(token);
-        if (!decodedToken || typeof decodedToken !== "object" || !("id" in decodedToken)) {
-            return NextResponse.json({ response: "Failed to extract user information" }, { status: 500 });
-        }
-
-        const userId = (decodedToken as JwtPayload).id;  // Explicitly cast as JwtPayload
+        const userId = (decodedToken as JwtPayload).id;
 
         const postcreated = await prisma.post.create({
             data: {
@@ -85,15 +67,14 @@ export async function POST(request: Request) {
             include: {
                 user: {
                     select: {
-                        name: true, 
-                        username: true, 
+                        name: true,
+                        username: true,
                     },
                 },
             },
         });
 
         return NextResponse.json({ response: "Post created successfully!", postcreated }, { status: 201 });
-
     } catch (error) {
         console.error("Error creating post:", error);
         return NextResponse.json({ response: "An unexpected error occurred" }, { status: 500 });

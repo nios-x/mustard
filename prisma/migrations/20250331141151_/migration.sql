@@ -57,6 +57,17 @@ CREATE TABLE "Comment" (
     CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Friend" (
+    "id" TEXT NOT NULL,
+    "user1" TEXT NOT NULL,
+    "user2" TEXT NOT NULL,
+    "isAccepted" BOOLEAN NOT NULL DEFAULT false,
+    "isBlocked" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "Friend_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
@@ -68,6 +79,9 @@ CREATE UNIQUE INDEX "TempUser_username_key" ON "TempUser"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "TempUser_email_key" ON "TempUser"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Friend_user1_user2_key" ON "Friend"("user1", "user2");
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "Post_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -83,3 +97,9 @@ ALTER TABLE "Comment" ADD CONSTRAINT "Comment_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Friend" ADD CONSTRAINT "Friend_user1_fkey" FOREIGN KEY ("user1") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Friend" ADD CONSTRAINT "Friend_user2_fkey" FOREIGN KEY ("user2") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

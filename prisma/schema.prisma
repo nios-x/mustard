@@ -6,7 +6,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 model User {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   username  String   @unique
   email     String   @unique
   password  String
@@ -17,10 +17,14 @@ model User {
   posts     Post[]
   likes     Like[]
   comments  Comment[]
+  
+  friends1  Friend[] @relation("User1Friend")
+  friends2  Friend[] @relation("User2Friend")
 }
 
+
 model TempUser {
-  id             String   @id @default(cuid())
+  id             String   @id @default(uuid())
   username       String   @unique
   email          String   @unique
   password       String?
@@ -40,6 +44,7 @@ model Post {
   likes     Like[]
   comments  Comment[]
 }
+
 model Like {
   id      String   @id @default(uuid())
   userId  String
@@ -47,6 +52,7 @@ model Like {
   user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
   post    Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
+
 model Comment {
   id          String   @id @default(uuid())
   description String
@@ -55,4 +61,14 @@ model Comment {
   postId      String
   user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
   post        Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+model Friend {
+  id         String   @id @default(uuid())
+  user1      String
+  user2      String
+  isAccepted Boolean  @default(false)
+  isBlocked  Boolean  @default(false)
+  userR1 User @relation(fields: [user1], references: [id], onDelete: Cascade, name: "User1Friend")
+  userR2 User @relation(fields: [user2], references: [id], onDelete: Cascade, name: "User2Friend")
+  @@unique([user1, user2]) 
 }

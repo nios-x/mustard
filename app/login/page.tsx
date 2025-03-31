@@ -31,7 +31,7 @@ const Page = () => {
             body = { ...form };
         }
         try {
-            const response = await fetch(`/api/signup/${suffixurl}`, {
+            const response = await fetch(`/api/auth/signup/${suffixurl}`, {
                 method: "POST",
                 body: JSON.stringify({ ...body }),
                 headers: {

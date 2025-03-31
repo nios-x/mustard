@@ -22,7 +22,7 @@ export default function Home() {
   
   useEffect(() => {
     (async () => {
-      const response = await fetch("/api/create-post", {
+      const response = await fetch("/api/public/create-post", {
         credentials: "include",
         method: "GET"
       })

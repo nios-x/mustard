@@ -33,7 +33,7 @@ export default function CreateAPost(props:any) {
     const submitPost = async () => {
         setIsSubmitting(true);
         try {
-            const response = await fetch("/api/create-post", {
+            const response = await fetch("/api/public/create-post", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

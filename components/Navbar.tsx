@@ -33,7 +33,7 @@ export default () => {
                 {basicDetails.links.map((e) => (
                     <Link
                         key={e.link}
-                        className="px-5 py-1 hover:translate-y-2 hover:text-lg transition-[500] hover:bg-zinc-50 rounded-sm"
+                        className="px-5 py-1 hover:translate-y-2 hover:text-lg transition-[500] rounded-sm"
                         href={e.link}
                         
                     >
