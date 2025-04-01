@@ -6,7 +6,7 @@ export default async function AuthMiddleWare() {
     const token =  cookieStore.get("token")?.value;
 
     if (!token) {
-        throw new Error("Unauthorized: Kindly Login or Sign Up to View Posts");
+        throw new Error("Unauthorized: Kindly Login or Sign Up");
     }
 
     if (!tokenVerifier(token)) {

@@ -45,6 +45,7 @@ export default function CreateAPost(props:any) {
             if (data.response) toast(data.response);
             if(data.postcreated){
                 props.setPosts([data.postcreated, ...props.posts])
+
             }
             setIsSubmitting(false);
             setIsDrawerOpen(false); // Close drawer after posting

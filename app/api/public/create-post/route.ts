@@ -11,7 +11,7 @@ export async function GET(request: Request) {
         try {
             decodedToken = await AuthMiddleWare();
         } catch (e:any) {
-            return NextResponse.json({ response: e.message }, { status: 400 });
+            return NextResponse.json({ status:"BAD", response: e.message }, { status: 400 });
         }
 
         const { searchParams } = new URL(request.url);

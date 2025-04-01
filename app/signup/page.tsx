@@ -90,7 +90,7 @@ const Page = () => {
     return (
         <div className='w-full h-full flex justify-center '>
 
-        <div className='pt-14 w-full  h-full border mt-8 mx-4 lg:w-1/3 md:w-1/3 rounded-2xl px-3 pb-6'>
+        <div className='pt-14 w-full  h-full  mt-8 mx-4 lg:w-1/3 md:w-1/3 rounded-2xl px-3 pb-6'>
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} draggable pauseOnHover theme="dark" />
             
             <Heading>

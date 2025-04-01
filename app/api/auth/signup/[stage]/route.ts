@@ -107,7 +107,7 @@ async function getSignUpData3(b: any) {
     const createdUser = await prisma.user.create({ data: { username: user.username, email: user.email, password: user.password as string, name: user.name, phone: user.phone } });
     await prisma.tempUser.delete({ where: { id: b.userid } });
 
-    const token = generateToken({ id: createdUser.username });
+    const token = generateToken({ id: createdUser.id });
 
     const response = NextResponse.json({ response: 'success', received: b, stage: 4,  });
     response.cookies.set( "token", token,{

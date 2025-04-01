@@ -63,7 +63,7 @@ const Page = () => {
     return (
         <div className='w-full flex justify-center '>
 
-        <div className='pt-8 w-full border mt-6 mx-4 lg:w-1/3 md:w-1/3 rounded-2xl px-3 pb-6'>
+        <div className='pt-8 w-full  mt-6 mx-4 lg:w-1/3 md:w-1/3 rounded-2xl px-3 pb-6'>
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} draggable pauseOnHover theme="dark" />
             <Heading >
                 Login <FaLock className="pl-4" stroke="2px" />
