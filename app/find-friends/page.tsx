@@ -1,5 +1,5 @@
 'use client'
-import gsap, { useGSAP } from '@gsap/react';
+import Link from 'next/link';
 import React, { useEffect, useState, useCallback } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Heading from '@/components/Heading';
@@ -35,8 +35,8 @@ export default function FindFriends() {
   return (
     <div>
       <Heading>
-        <div className='text-2xl text-zinc-600 p-5'>
-            Find Friends
+      <div className='text-2xl text-zinc-600 p-5'>
+      Find Friends <Link href={"/friends"} className='text-sm text-blue-500 '>Friends</Link>
         </div>
       </Heading>
       <div className='px-3'>
