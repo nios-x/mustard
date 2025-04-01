@@ -10,10 +10,11 @@ export default function FindFriends() {
   const [hasMore, setHasMore] = useState(true);
   const fetchFriends = useCallback(async () => {
     try {
-      const response = await fetch(`/api/public/friends?page=${page}`);
+      const response = await fetch(`/api/public/find-friends?page=${page}`);
       const data = await response.json();
-      if (data?.friends?.length) {
-        setFriendList(prevFriends => [...prevFriends, ...data.friends]);
+      console.log(data)
+      if (data?.users?.length) {
+        setFriendList(prevFriends => [...prevFriends, ...data.users]);
         setPage(prev => prev + 1);
       } else {
         setHasMore(false);
@@ -35,7 +36,7 @@ export default function FindFriends() {
     <div>
       <Heading>
         <div className='text-2xl text-zinc-600 p-5'>
-          Friends
+            Find Friends
         </div>
       </Heading>
       <div className='px-3'>
@@ -63,7 +64,7 @@ export default function FindFriends() {
                 Joined: {new Date(e.createdAt).toDateString()} at {new Date(e.createdAt).toLocaleTimeString()}
               </div>
               <div className='flex justify-end'> 
-                <button     onClick={() => handleFollow(e)} className=' static top-1/2 bg-gradient-to-br from-red-500 text-sm to-red-400 py-2 px-3 rounded-full text-white'>Unfollow</button>
+                <button     onClick={() => handleFollow(e)} className=' static top-1/2 bg-gradient-to-br from-red-500 text-sm to-orange-400 py-2 px-3 rounded-full text-white'>Follow</button>
               </div>
             </div>
           ))}
