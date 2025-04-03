@@ -8,45 +8,49 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { Toaster } from '@/components/ui/sonner';
 
-export default function FindFriends() {
-  const [friendsList, setFriendList] = useState<any[]>([]);
+export default function FriendRequests() {
+  const [friendRequests, setFriendRequests] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  const fetchFriends = useCallback(async () => {
+  const fetchFriendRequests = useCallback(async () => {
     try {
-      const response = await fetch(`/api/public/find-friends?page=${page}`);
+      const response = await fetch(`/api/public/friends/accept-request?page=${page}`);
       const data = await response.json();
-      if (data?.users?.length) {
-        setFriendList((prevFriends) => [...prevFriends, ...data.users]);
+        console.log(data)
+      if (data?.friendRequests?.length > 0) {
+        setFriendRequests((prev) => [...prev, ...data.friendRequests]);
         setPage((prev) => prev + 1);
       } else {
         setHasMore(false);
       }
     } catch (error) {
-      console.error('Error fetching friends:', error);
+      console.error('Error fetching friend requests:', error);
+      toast.error('Failed to load friend requests.');
     }
   }, [page]);
 
-  useEffect(() => {
-    fetchFriends();
-  }, []);
-
-  const handleFollow = async (friendId: string) => {
+  useEffect(()=>{
+    fetchFriendRequests()
+  },[])
+  const handleAccept = async (friendId: string) => {
     try {
-      const response = await fetch('/api/public/friends/add-request', {
+      const response = await fetch('/api/public/friends/accept-request', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ friendId })
+        body: JSON.stringify({ friendId }),
       });
+
       const data = await response.json();
-      if (data.response) {
-        toast.success('Friend request sent');
+      console.log(data)
+      if (data.response === 'Success') {
+        toast.success('Friend request accepted');
+        setFriendRequests((prev) => prev.filter((req) => req.id !== friendId));
       } else {
-        toast.error('Failed to send request');
+        toast.error('Failed to accept request.');
       }
     } catch (error) {
-      toast.error('Failed to send request');
+      toast.error('Failed to accept request.');
     }
   };
 
@@ -55,22 +59,22 @@ export default function FindFriends() {
       <Toaster />
       <Heading>
         <div className='text-2xl mt-3 text-zinc-600 pt-5 flex items-baseline gap-x-4'>
-          <div className='bg-zinc-700 text-xl text-white rounded-t-2xl px-4 py-1'>Find Friends</div>
+          <Link href={'/find-friends'} className='text-sm text-blue-500'>Find Friends</Link>
+          <div className='bg-zinc-700 text-xl text-white rounded-t-2xl px-4 py-1'>Requests</div>
           <Link href={'/friends'} className='text-sm text-blue-500'>Friends</Link>
-          <Link href={'/accept-friends'} className='text-sm text-blue-500'>Requests</Link>
         </div>
       </Heading>
       <div className='w-full h-[0.6px] mb-4 bg-zinc-300'></div>
       <div className='px-3'>
         <InfiniteScroll
-          dataLength={friendsList.length}
-          next={fetchFriends}
+          dataLength={friendRequests.length}
+          next={fetchFriendRequests}
           hasMore={hasMore}
           loader={<h4 className='mt-8 text-sm  text-center'>Loading...</h4>}
-          endMessage={<p className='text-gray-500 text-center mt-3'>No more users to show.</p>}
+          endMessage={<p className='text-gray-500 text-center mt-3'>No more friend requests.</p>}
         >
-          {friendsList.map((e) => (
-            <div key={e.id || `${e.createdAt}-${e.username}`} className='bg-white z-10 mb-3 p-5 rounded-lg border'>
+          {friendRequests.map((req) => (
+            <div key={req.id} className='bg-white z-10 mb-3 p-5 rounded-lg border'>
               <div className='flex items-center space-x-3'>
                 <img
                   src='https://static.vecteezy.com/system/resources/previews/035/727/704/non_2x/3d-realistic-person-or-people-user-social-network-icon-3d-rendering-illustration-vector.jpg'
@@ -78,17 +82,16 @@ export default function FindFriends() {
                   className='w-10 h-10 rounded-full border'
                 />
                 <div>
-                  <div className='font-semibold text-lg'>{e.name}</div>
-                  <div className='text-gray-500 text-sm'>@{e.username}</div>
+                  <div className='font-semibold text-lg'>{req.userR1.name}</div>
+                  <div className='text-gray-500 text-sm'>@{req.userR1.username}</div>
                 </div>
               </div>
               <div className='mt-2 text-gray-400 text-xs'>
-                Joined: {new Date(e.createdAt).toDateString()} at {new Date(e.createdAt).toLocaleTimeString()}
               </div>
               <div className='flex justify-end'>
-                <button onClick={() => handleFollow(e.id)} className='bg-gradient-to-br from-blue-500 text-sm to-blue-400 py-2 px-3 rounded-full text-white'>
-                  Follow
-                </button>
+                <Button onClick={() => handleAccept(req.userR1.id)} className='bg-green-500 text-white py-2 px-3 rounded-full'>
+                  Accept
+                </Button>
               </div>
             </div>
           ))}

@@ -4,3 +4,8 @@ export default function({children}:{children: React.ReactNode}){
         {children}
     </div>
 }
+export function Heading({children}:{children: React.ReactNode}){
+    return <div className="flex  justify-center text-4xl  px-4 gap-2 lg:mt-6">
+        {children}
+    </div>
+}

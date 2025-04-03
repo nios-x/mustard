@@ -30,11 +30,11 @@ export async function GET(request: Request) {
                 userR2: { select: { id: true, name: true, username: true, createdAt: true } }   
             }
         });
-
         // Transform data to return only the friend user details
         const friendList = friends.map(friend => {
             return friend.userR1.id === decodedToken.id ? friend.userR2 : friend.userR1;
         });
+        console.log(friends)
 
         return NextResponse.json({ response: "success", friends: friendList }, { status: 200 });
 
