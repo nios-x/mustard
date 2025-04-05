@@ -56,10 +56,13 @@ export default function Friends() {
     <div>
       <Toaster />
       <Heading>
-        <div className='text-2xl mt-3 text-zinc-600 pt-5 flex items-baseline gap-x-4'>
-          <Link href={'/find-friends'} className='text-sm text-blue-500'>Find Friends</Link>
-          <div className='bg-zinc-700 text-xl text-white rounded-t-2xl px-4 py-1'>Friends</div>
-          <Link href={'/accept-friends'} className='text-sm text-blue-500'>Requests</Link>
+        <div className='text-2xl mt-3 text-zinc-600 pt-5  '>
+          <div className='px-2 pt-2 bg-zinc-200 rounded-t-md flex  items-baseline gap-x-4'>
+
+          <div className='bg-zinc-800 text-lg text-white  rounded-t-lg px-4 py-1'>Friends</div>
+          <Link href={'/find-friends'} className='text-sm px-1 text-blue-500'>Find Friends</Link>
+          <Link href={'/accept-friends'} className='text-sm px-1 pr-2 text-blue-500'>Requests</Link>
+          </div>
         </div>
       </Heading>
       <div className='w-full h-[0.6px] mb-4 bg-zinc-300'></div>

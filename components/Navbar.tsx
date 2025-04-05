@@ -18,11 +18,11 @@ export default () => {
     useEffect(() => {
         setMounted(true);
     }, []);
-
     if (!mounted) return null;
     function closewin(){
-        setMenu(false)
+        setMenu(!menu)
     }
+
     return (
         <div className="p-3 sticky top-0 w-full bg flex justify-between overflow-hidden">
     <div className="absolute inset-0 backdrop-blur-2xl -z-10"></div>

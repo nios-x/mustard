@@ -23,7 +23,6 @@ export async function GET(request: Request) {
                     { user1: decodedToken.id },
                     { user2: decodedToken.id }
                 ],
-                isAccepted: true,  
             },
             include: {
                 userR1: { select: { id: true } }, 

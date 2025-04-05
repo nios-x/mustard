@@ -40,6 +40,7 @@ export default function FindFriends() {
         body: JSON.stringify({ friendId })
       });
       const data = await response.json();
+      alert(data.response);
       if (data.response) {
         toast.success('Friend request sent');
       } else {
@@ -53,11 +54,14 @@ export default function FindFriends() {
   return (
     <div>
       <Toaster />
+      
       <Heading>
-        <div className='text-2xl mt-3 text-zinc-600 pt-5 flex items-baseline gap-x-4'>
-          <div className='bg-zinc-700 text-xl text-white rounded-t-2xl px-4 py-1'>Find Friends</div>
-          <Link href={'/friends'} className='text-sm text-blue-500'>Friends</Link>
-          <Link href={'/accept-friends'} className='text-sm text-blue-500'>Requests</Link>
+        <div className='text-2xl mt-3 text-zinc-600 pt-5  '>
+          <div className='px-2 pt-2 bg-zinc-200 rounded-t-xl flex  items-baseline gap-x-4'>
+          <Link href={'/friends'} className='text-sm text-blue-500 pl-2'>Friends</Link>
+          <div className='bg-zinc-800 text-lg text-white rounded-t-lg px-4 py-1'>Find Friends</div>
+          <Link href={'/accept-friends'} className='text-sm text-blue-500 pr-2'>Requests</Link>
+          </div>
         </div>
       </Heading>
       <div className='w-full h-[0.6px] mb-4 bg-zinc-300'></div>
