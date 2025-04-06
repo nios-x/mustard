@@ -42,12 +42,11 @@ export default function FriendRequests() {
       });
 
       const data = await response.json();
-      console.log(data)
-      if (data.response === 'Success') {
+      
+      if (data.count == 1) {
         toast.success('Friend request accepted');
-        setFriendRequests((prev) => prev.filter((req) => req.id !== friendId));
-      } else {
-        toast.error('Failed to accept request.');
+        
+        setFriendRequests(friendRequests => friendRequests.filter((req) => req.id !== friendId));
       }
     } catch (error) {
       toast.error('Failed to accept request.');

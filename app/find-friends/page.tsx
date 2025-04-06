@@ -17,6 +17,7 @@ export default function FindFriends() {
     try {
       const response = await fetch(`/api/public/find-friends?page=${page}`);
       const data = await response.json();
+      
       if (data?.users?.length) {
         setFriendList((prevFriends) => [...prevFriends, ...data.users]);
         setPage((prev) => prev + 1);
@@ -40,7 +41,7 @@ export default function FindFriends() {
         body: JSON.stringify({ friendId })
       });
       const data = await response.json();
-      alert(data.response);
+      console.log(data.response);
       if (data.response) {
         toast.success('Friend request sent');
       } else {

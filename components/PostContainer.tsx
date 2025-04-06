@@ -1,9 +1,49 @@
 import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
+import { IoHeartOutline } from "react-icons/io5";
+import { IoHeartSharp } from "react-icons/io5";
+import { TbMessageCircle } from "react-icons/tb";
+import { BiMessageSquareMinus } from "react-icons/bi";
+import { RiShareForwardLine } from "react-icons/ri";
+import { toast, Toaster } from 'sonner';
 export default function PostContainer({ posts, fetchPosts, hasMore }:{posts:any, fetchPosts:any, hasMore:boolean}) {
+  const copyText = async () => {
+    try {
+      const text = window.location.href;
+
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        toast.success("Copied to clipboard!");
+      } else {
+        // Fallback for mobile/older browsers
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+
+        textArea.style.position = "fixed";
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.opacity = "0";
+
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        const successful = document.execCommand("copy");
+        document.body.removeChild(textArea);
+
+        successful
+          ? toast.success("Copied to clipboard!")
+          : toast.error("Failed to copy.");
+      }
+    } catch (err) {
+      toast.error("Failed to copy.");
+      console.error(err);
+    }
+  }
+  
   return (
     <div className="p-4 max-w-3xl mx-auto">
+      <Toaster/>
       <div className="text-xl text-gray-700 w-full p-3 bg-white font-semibold border rounded-lg z-[50]">
         Recent Posts
       </div>
@@ -25,17 +65,26 @@ export default function PostContainer({ posts, fetchPosts, hasMore }:{posts:any,
                 />
                 <div>
                   <div className="font-semibold text-lg">{post.user.name}</div>
-                  <div className="text-gray-500 text-sm">@{post.user.username}</div>
+                  <div className="li text-sm">@{post.user.username}</div>
                 </div>
               </div>
               <div className="mt-3 text-sm text-gray-800">{post.content}</div>
               <div className="mt-2 text-gray-400 text-xs">
                 {new Date(post.createdAt).toDateString()} at {new Date(post.createdAt).toTimeString().split("G")[0]}
               </div>
-              <div className="flex justify-around mt-5 text-sm bg-zinc-50 p-2 rounded-xl">
-                <span>Like</span>
-                <span>Comments</span>
-                <span>Share</span>
+              <div className="flex items-center px-1 py-1 justify-around mt-5 text-sm bg-zinc-50  rounded-xl">
+                <span className='text-red-500 active:bg-zinc-100  w-1/3 justify-center text-2xl flex py-1 rounded-xl px-2'>
+                  {/* <IoHeartOutline/> */}
+                <IoHeartSharp/>
+                <span className='text-sm flex items-center  pl-1'> 1.1k</span>
+                </span>
+                <span className='  text-cyan-800 active:bg-zinc-100  w-1/3 justify-center text-2xl flex py-1 rounded-xl px-2'>
+                  {/* <IoHeartOutline/> */}
+                  <BiMessageSquareMinus/><span className='text-sm flex items-center  pl-1'> 1.1k</span>
+                </span>
+                <span onClick={copyText} className='  text-green-800 active:bg-zinc-100  w-1/3 justify-center text-2xl flex py-1 rounded-xl px-2'>
+                <RiShareForwardLine/>
+                </span>
               </div>
             </div>
           ))}

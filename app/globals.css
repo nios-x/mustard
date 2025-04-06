@@ -8,6 +8,10 @@
   src: url("/fonts/Poppins-Regular.ttf");
 }
 *{
+  user-select: none;
+  -webkit-user-select: none; /* For Safari */
+  -moz-user-select: none;    /* For Firefox */  
+  -ms-user-select: none;   
   font-family: poppins;
 }
 @font-face {
@@ -162,4 +166,21 @@ button{
 .themefontrev{
   background: linear-gradient(108deg, red, orange);
   color: white;
+}
+.like-btn {
+  color: #e0245e;
+}
+.like-btn:hover {
+  color: #c2185b;
+}.comment-btn {
+  color: #1da1f2;
+}
+.comment-btn:hover {
+  color: #0d8ddb;
+}
+.share-btn {
+  color: #17bf63;
+}
+.share-btn:hover {
+  color: #13a456;
 }
