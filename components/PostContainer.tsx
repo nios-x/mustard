@@ -44,12 +44,10 @@ export default function PostContainer({ posts, fetchPosts,setPosts, hasMore }:{p
   const likeDebounceRef = useRef<{ [key: string]: NodeJS.Timeout }>({});
 
   const postLike = async (postid: string) => {
-    // Clear existing debounce timer for this post
     if (likeDebounceRef.current[postid]) {
       clearTimeout(likeDebounceRef.current[postid]);
     }
   
-    // Set a new debounce timer
     likeDebounceRef.current[postid] = setTimeout(async () => {
       try {
         const res = await fetch("/api/public/likes/", {
@@ -81,7 +79,7 @@ export default function PostContainer({ posts, fetchPosts,setPosts, hasMore }:{p
           })
         );
   
-        toast.success(result.response === "added" ? "❤️ Liked!" : "Unliked!");
+        toast.success(result.response === "added" ? "Liked!" : "Unliked!");
       } catch (err) {
         console.error(err);
         toast.error("Something went wrong");
@@ -122,15 +120,15 @@ export default function PostContainer({ posts, fetchPosts,setPosts, hasMore }:{p
               <div className="mt-2 text-gray-400 text-xs">
                 {new Date(post.createdAt).toDateString()} at {new Date(post.createdAt).toTimeString().split("G")[0]}
               </div>
-              <div className="flex cursor-pointer items-center px-1 py-1 justify-around mt-5 text-sm bg-zinc-50  rounded-xl">
-                <span onClick={()=>postLike(post.id)} className='text-red-500 active:bg-zinc-100  w-1/3 justify-center text-2xl flex py-1 rounded-xl px-2'>
-                {!post.isLikedByCurrentUser?<IoHeartOutline/>:<IoHeartSharp/>}
+              <div className="flex cursor-pointer items-center px-1 py-1 justify-around mt-5 text-sm bg-zinc-50 gap-1  rounded-xl">
+                <span onClick={()=>postLike(post.id)} className='text-red-500  active:bg-zinc-50  w-1/3 bg-gray-100 justify-center text-2xl flex py-1 rounded-xl px-2'>
+                {!post.isLikedByCurrentUser?<IoHeartOutline className='scale-110'/>:<IoHeartSharp className='scale-110'/>}
                 <span className='text-sm flex items-center  pl-1'> {post.likeCount!=0 && `x${post.likeCount}`}</span>
                 </span>
-                <span className='  text-cyan-800 active:bg-zinc-100  w-1/3 justify-center text-2xl flex py-1 rounded-xl px-2'>
+                <span className='  text-cyan-800 active:bg-zinc-100  w-1/3 bg-gray-100 justify-center text-2xl flex py-1 rounded-xl px-2'>
                   <BiMessageSquareMinus/><span className='text-sm flex items-center  pl-1'> </span>
                 </span>
-                <span onClick={copyText} className='  text-green-800 active:bg-zinc-100  w-1/3 justify-center text-2xl flex py-1 rounded-xl px-2'>
+                <span onClick={copyText} className='  text-green-800 active:bg-zinc-100  w-1/3 bg-gray-100 justify-center text-2xl flex py-1 rounded-xl px-2'>
                 <RiShareForwardLine/>
                 </span>
               </div>
