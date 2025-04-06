@@ -6,6 +6,7 @@ import { BiMessageSquareMinus } from "react-icons/bi";
 import { RiShareForwardLine } from "react-icons/ri";
 import { toast, Toaster } from 'sonner';
 import { useRef } from 'react';
+import { GoComment } from "react-icons/go";
   
 export default function PostContainer({ posts, fetchPosts,setPosts, hasMore }:{posts:any, setPosts:any, fetchPosts:any, hasMore:boolean}) {
   const copyText = async () => {
@@ -95,13 +96,13 @@ export default function PostContainer({ posts, fetchPosts,setPosts, hasMore }:{p
       <div className="text-xl text-gray-700 w-full p-3 bg-white font-semibold border rounded-lg z-[50]">
         Recent Posts
       </div>
-      <div className="mt-4 space-y-4 overflow-y-scroll">
+      <div className="mt-4 space-y-4 ">
         <InfiniteScroll
           dataLength={posts.length}
           next={fetchPosts}
           hasMore={hasMore}
           loader={<h4 className='text-center'>Loading...</h4>}
-          endMessage={<p className="text-gray-500 text-center mt-3">No more posts to show.</p>}
+          endMessage={<p className="text-gray-500 text-center mt-3 text-sm">No more posts to show.</p>}
         >
           {posts.map((post:any) => (
             <div key={`${post.createdAt}-${post.username}`} className="bg-white p-5 mb-6 rounded-lg border">
@@ -122,7 +123,7 @@ export default function PostContainer({ posts, fetchPosts,setPosts, hasMore }:{p
               </div>
               <div className="flex cursor-pointer items-center px-1 py-1 justify-around mt-5 text-sm bg-zinc-50 gap-1  rounded-xl">
                 <span onClick={()=>postLike(post.id)} className='text-red-500  active:bg-zinc-50  w-1/3 bg-gray-100 justify-center text-2xl flex py-1 rounded-xl px-2'>
-                {!post.isLikedByCurrentUser?<IoHeartOutline className='scale-110'/>:<IoHeartSharp className='scale-110'/>}
+                {!post.isLikedByCurrentUser?<IoHeartOutline  />:<IoHeartSharp  />}
                 <span className='text-sm flex items-center  pl-1'> {post.likeCount!=0 && `x${post.likeCount}`}</span>
                 </span>
                 <span className='  text-cyan-800 active:bg-zinc-100  w-1/3 bg-gray-100 justify-center text-2xl flex py-1 rounded-xl px-2'>
