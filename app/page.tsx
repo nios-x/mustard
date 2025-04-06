@@ -19,12 +19,14 @@ export default function Home() {
     tl.from('.box', { x: "-100vw", stagger: 0.2, duration: 0.5 });
     tl.to(".box", { opacity: 0, stagger: 0.2, duration: 0.5 });
   });
+  
   const fetchPosts = useCallback(async () => {
     const response = await fetch(`/api/public/create-post?page=${page}`, {
       credentials: "include",
       method: "GET"
     });
     const data = await response.json();
+    console.log(data)
     if(data.status ==="BAD"){
       setIsLoading(false)
       return;
@@ -65,7 +67,7 @@ export default function Home() {
           </div>
         </>
       )}
-      {!isLoading && <PostContainer posts={posts} fetchPosts={fetchPosts} hasMore={hasMore} />}
+      {!isLoading && <PostContainer posts={posts} setPosts={setPosts} fetchPosts={fetchPosts} hasMore={hasMore} />}
     </div>
   );
 }

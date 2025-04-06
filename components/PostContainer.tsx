@@ -2,11 +2,12 @@ import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { IoHeartOutline } from "react-icons/io5";
 import { IoHeartSharp } from "react-icons/io5";
-import { TbMessageCircle } from "react-icons/tb";
 import { BiMessageSquareMinus } from "react-icons/bi";
 import { RiShareForwardLine } from "react-icons/ri";
 import { toast, Toaster } from 'sonner';
-export default function PostContainer({ posts, fetchPosts, hasMore }:{posts:any, fetchPosts:any, hasMore:boolean}) {
+import { useRef } from 'react';
+  
+export default function PostContainer({ posts, fetchPosts,setPosts, hasMore }:{posts:any, setPosts:any, fetchPosts:any, hasMore:boolean}) {
   const copyText = async () => {
     try {
       const text = window.location.href;
@@ -40,6 +41,55 @@ export default function PostContainer({ posts, fetchPosts, hasMore }:{posts:any,
       console.error(err);
     }
   }
+  const likeDebounceRef = useRef<{ [key: string]: NodeJS.Timeout }>({});
+
+  const postLike = async (postid: string) => {
+    // Clear existing debounce timer for this post
+    if (likeDebounceRef.current[postid]) {
+      clearTimeout(likeDebounceRef.current[postid]);
+    }
+  
+    // Set a new debounce timer
+    likeDebounceRef.current[postid] = setTimeout(async () => {
+      try {
+        const res = await fetch("/api/public/likes/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ postid }),
+        });
+  
+        const result = await res.json();
+        if (!result.success) {
+          toast.error("Failed to update like.");
+          return;
+        }
+  
+        // Update post state in UI
+        setPosts((prevPosts: any[]) =>
+          prevPosts.map(post => {
+            if (post.id === postid) {
+              const isLiked = post.isLikedByCurrentUser;
+              return {
+                ...post,
+                isLikedByCurrentUser: !isLiked,
+                likeCount: isLiked ? post.likeCount - 1 : post.likeCount + 1,
+              };
+            }
+            return post;
+          })
+        );
+  
+        toast.success(result.response === "added" ? "❤️ Liked!" : "Unliked!");
+      } catch (err) {
+        console.error(err);
+        toast.error("Something went wrong");
+      }
+    }, 300); // 300ms debounce time
+  };
+  
+  
   
   return (
     <div className="p-4 max-w-3xl mx-auto">
@@ -72,15 +122,13 @@ export default function PostContainer({ posts, fetchPosts, hasMore }:{posts:any,
               <div className="mt-2 text-gray-400 text-xs">
                 {new Date(post.createdAt).toDateString()} at {new Date(post.createdAt).toTimeString().split("G")[0]}
               </div>
-              <div className="flex items-center px-1 py-1 justify-around mt-5 text-sm bg-zinc-50  rounded-xl">
-                <span className='text-red-500 active:bg-zinc-100  w-1/3 justify-center text-2xl flex py-1 rounded-xl px-2'>
-                  {/* <IoHeartOutline/> */}
-                <IoHeartSharp/>
-                <span className='text-sm flex items-center  pl-1'> 1.1k</span>
+              <div className="flex cursor-pointer items-center px-1 py-1 justify-around mt-5 text-sm bg-zinc-50  rounded-xl">
+                <span onClick={()=>postLike(post.id)} className='text-red-500 active:bg-zinc-100  w-1/3 justify-center text-2xl flex py-1 rounded-xl px-2'>
+                {!post.isLikedByCurrentUser?<IoHeartOutline/>:<IoHeartSharp/>}
+                <span className='text-sm flex items-center  pl-1'> {post.likeCount!=0 && `x${post.likeCount}`}</span>
                 </span>
                 <span className='  text-cyan-800 active:bg-zinc-100  w-1/3 justify-center text-2xl flex py-1 rounded-xl px-2'>
-                  {/* <IoHeartOutline/> */}
-                  <BiMessageSquareMinus/><span className='text-sm flex items-center  pl-1'> 1.1k</span>
+                  <BiMessageSquareMinus/><span className='text-sm flex items-center  pl-1'> </span>
                 </span>
                 <span onClick={copyText} className='  text-green-800 active:bg-zinc-100  w-1/3 justify-center text-2xl flex py-1 rounded-xl px-2'>
                 <RiShareForwardLine/>
