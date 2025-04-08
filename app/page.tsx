@@ -67,7 +67,7 @@ export default function Home() {
           </div>
         </>
       )}
-      {!isLoading && <PostContainer posts={posts} setPosts={setPosts} fetchPosts={fetchPosts} hasMore={hasMore} />}
+      {!isLoading && <PostContainer isRecentPost={true} posts={posts} setPosts={setPosts} fetchPosts={fetchPosts} hasMore={hasMore} />}
     </div>
   );
 }

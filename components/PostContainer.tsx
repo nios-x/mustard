@@ -1,14 +1,11 @@
 import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { IoHeartOutline } from "react-icons/io5";
-import { IoHeartSharp } from "react-icons/io5";
-import { BiMessageSquareMinus } from "react-icons/bi";
-import { RiShareForwardLine } from "react-icons/ri";
 import { toast, Toaster } from 'sonner';
 import { useRef } from 'react';
-import { GoComment } from "react-icons/go";
-  
-export default function PostContainer({ posts, fetchPosts,setPosts, hasMore }:{posts:any, setPosts:any, fetchPosts:any, hasMore:boolean}) {
+import Post from '@/components/Post'; // Adjust path based on your structure
+
+
+export default function PostContainer({isRecentPost, posts, fetchPosts,setPosts, hasMore }:{isRecentPost?:any, posts:any, setPosts:any, fetchPosts:any, hasMore:boolean}) {
   const copyText = async () => {
     try {
       const text = window.location.href;
@@ -93,9 +90,12 @@ export default function PostContainer({ posts, fetchPosts,setPosts, hasMore }:{p
   return (
     <div className="p-4 max-w-3xl mx-auto">
       <Toaster/>
-      <div className="text-xl text-gray-700 w-full p-3 bg-white font-semibold border rounded-lg z-[50]">
+      { isRecentPost &&  <div className="text-xl text-gray-700 w-full p-3 bg-white font-semibold border rounded-lg z-[50]">
         Recent Posts
-      </div>
+      </div>}
+      { !isRecentPost &&  <div className="text-xl text-gray-700 w-full p-3 bg-white font-semibold border rounded-lg z-[50]">
+        Flicked
+      </div>}
       <div className="mt-4 space-y-4 ">
         <InfiniteScroll
           dataLength={posts.length}
@@ -104,37 +104,9 @@ export default function PostContainer({ posts, fetchPosts,setPosts, hasMore }:{p
           loader={<h4 className='text-center'>Loading...</h4>}
           endMessage={<p className="text-gray-500 text-center mt-3 text-sm">No more posts to show.</p>}
         >
-          {posts.map((post:any) => (
-            <div key={`${post.createdAt}-${post.username}`} className="bg-white p-5 mb-6 rounded-lg border">
-              <div className="flex items-center space-x-3">
-                <img
-                  src={post.user.avatarUrl || "https://static.vecteezy.com/system/resources/previews/035/727/704/non_2x/3d-realistic-person-or-people-user-social-network-icon-3d-rendering-illustration-vector.jpg"}
-                  alt="User Avatar"
-                  className="w-10 h-10 rounded-full border"
-                />
-                <div>
-                  <div className="font-semibold text-lg">{post.user.name}</div>
-                  <div className="li text-sm">@{post.user.username}</div>
-                </div>
-              </div>
-              <div className="mt-3 text-sm text-gray-800">{post.content}</div>
-              <div className="mt-2 text-gray-400 text-xs">
-                {new Date(post.createdAt).toDateString()} at {new Date(post.createdAt).toTimeString().split("G")[0]}
-              </div>
-              <div className="flex cursor-pointer items-center px-1 py-1 justify-around mt-5 text-sm bg-zinc-50 gap-1  rounded-xl">
-                <span onClick={()=>postLike(post.id)} className='text-red-500  active:bg-zinc-50  w-1/3 bg-gray-100 justify-center text-2xl flex py-1 rounded-xl px-2'>
-                {!post.isLikedByCurrentUser?<IoHeartOutline  />:<IoHeartSharp  />}
-                <span className='text-sm flex items-center  pl-1'> {post.likeCount!=0 && `x${post.likeCount}`}</span>
-                </span>
-                <span className='  text-cyan-800 active:bg-zinc-100  w-1/3 bg-gray-100 justify-center text-2xl flex py-1 rounded-xl px-2'>
-                  <BiMessageSquareMinus/><span className='text-sm flex items-center  pl-1'> </span>
-                </span>
-                <span onClick={copyText} className='  text-green-800 active:bg-zinc-100  w-1/3 bg-gray-100 justify-center text-2xl flex py-1 rounded-xl px-2'>
-                <RiShareForwardLine/>
-                </span>
-              </div>
-            </div>
-          ))}
+         {posts.map((post: any) => (
+  <Post key={`${post.createdAt}-${post.username}`} post={post} postLike={postLike} copyText={copyText} />
+))}
         </InfiniteScroll>
       </div>
     </div>
