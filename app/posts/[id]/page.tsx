@@ -8,7 +8,6 @@ export default function Home() {
   
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState<any[]>([]);
-  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
   const params = useParams<{ id: string }>();
@@ -27,12 +26,11 @@ export default function Home() {
     if (data?.posts?.length) {
       console.log(data.posts.length)
       setIsLoading(false);
-      setPage(prev => prev + 1);
-      setPosts(op => [...op, ...data.posts]);
+      setPosts(data.posts);
     } else {
       setHasMore(false);
     }
-  }, [page]); 
+  }, []); 
   useEffect(() => {
     fetchPosts();
   }, []); 
