@@ -5,16 +5,17 @@ import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import { BiMessageSquareMinus } from "react-icons/bi";
 import { RiShareForwardLine } from "react-icons/ri";
 import { toast } from 'sonner';
-
+import Link from 'next/link';
 export default function Post({ post, postLike, copyText }: { post: any, postLike: (id: string) => void, copyText: () => void }) {
   return (
+    <Link href={`posts/${post.id}`}>
     <div className="bg-white p-5 mb-6 rounded-lg border">
       <div className="flex items-center space-x-3">
         <img
           src={post.user.avatarUrl || "https://static.vecteezy.com/system/resources/previews/035/727/704/non_2x/3d-realistic-person-or-people-user-social-network-icon-3d-rendering-illustration-vector.jpg"}
           alt="User Avatar"
           className="w-10 h-10 rounded-full border"
-        />
+          />
         <div>
           <div className="font-semibold text-lg">{post.user.name}</div>
           <div className="li text-sm">@{post.user.username}</div>
@@ -37,5 +38,6 @@ export default function Post({ post, postLike, copyText }: { post: any, postLike
         </span>
       </div>
     </div>
+    </Link>
   );
 }

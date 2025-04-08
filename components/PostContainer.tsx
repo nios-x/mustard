@@ -3,7 +3,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { toast, Toaster } from 'sonner';
 import { useRef } from 'react';
 import Post from '@/components/Post'; // Adjust path based on your structure
-
+import { IoIosArrowBack } from "react-icons/io";
+import Link from 'next/link';
 
 export default function PostContainer({isRecentPost, posts, fetchPosts,setPosts, hasMore }:{isRecentPost?:any, posts:any, setPosts:any, fetchPosts:any, hasMore:boolean}) {
   const copyText = async () => {
@@ -93,8 +94,8 @@ export default function PostContainer({isRecentPost, posts, fetchPosts,setPosts,
       { isRecentPost &&  <div className="text-xl text-gray-700 w-full p-3 bg-white font-semibold border rounded-lg z-[50]">
         Recent Posts
       </div>}
-      { !isRecentPost &&  <div className="text-xl text-gray-700 w-full p-3 bg-white font-semibold border rounded-lg z-[50]">
-        Flicked
+      { !isRecentPost &&  <div className="text-xl flex gap-3 items-center text-gray-700 w-full p-3 bg-white font-semibold border rounded-lg z-[50]">
+      <Link href={"/"}>  <IoIosArrowBack/></Link> Flicked
       </div>}
       <div className="mt-4 space-y-4 ">
         <InfiniteScroll
@@ -105,7 +106,7 @@ export default function PostContainer({isRecentPost, posts, fetchPosts,setPosts,
           endMessage={<p className="text-gray-500 text-center mt-3 text-sm">No more posts to show.</p>}
         >
          {posts.map((post: any) => (
-  <Post key={`${post.createdAt}-${post.username}`} post={post} postLike={postLike} copyText={copyText} />
+  <Post key={`${post.createdAt}-${post.username}`}  post={post} postLike={postLike} copyText={copyText} />
 ))}
         </InfiniteScroll>
       </div>
