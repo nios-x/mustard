@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import Link from 'next/link';
 export default function Post({ post, postLike, copyText }: { post: any, postLike: (id: string) => void, copyText: () => void }) {
   return (
-    <Link href={`posts/${post.id}`}>
+    
     <div className="bg-white p-5 mb-6 rounded-lg border">
       <div className="flex items-center space-x-3">
         <img
@@ -21,10 +21,13 @@ export default function Post({ post, postLike, copyText }: { post: any, postLike
           <div className="li text-sm">@{post.user.username}</div>
         </div>
       </div>
+      <Link href={`posts/${post.id}`}>
       <div className="mt-3 text-sm text-gray-800">{post.content}</div>
       <div className="mt-2 text-gray-400 text-xs">
         {new Date(post.createdAt).toDateString()} at {new Date(post.createdAt).toTimeString().split("G")[0]}
       </div>
+      </Link>
+
       <div className="flex cursor-pointer items-center px-1 py-1 justify-around mt-5 text-sm bg-zinc-50 gap-1  rounded-xl">
         <span onClick={() => postLike(post.id)} className='text-red-500 active:bg-zinc-50 w-1/3 bg-gray-100 justify-center text-2xl flex py-1 rounded-xl px-2'>
           {!post.isLikedByCurrentUser ? <IoHeartOutline /> : <IoHeartSharp />}
@@ -38,6 +41,6 @@ export default function Post({ post, postLike, copyText }: { post: any, postLike
         </span>
       </div>
     </div>
-    </Link>
+
   );
 }
