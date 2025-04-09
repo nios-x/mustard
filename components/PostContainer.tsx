@@ -15,7 +15,6 @@ export default function PostContainer({isRecentPost, posts, fetchPosts,setPosts,
         await navigator.clipboard.writeText(text);
         toast.success("Copied to clipboard!");
       } else {
-        // Fallback for mobile/older browsers
         const textArea = document.createElement("textarea");
         textArea.value = text;
 
@@ -56,14 +55,11 @@ export default function PostContainer({isRecentPost, posts, fetchPosts,setPosts,
           },
           body: JSON.stringify({ postid }),
         });
-  
         const result = await res.json();
         if (!result.success) {
           toast.error("Failed to update like.");
           return;
         }
-  
-        // Update post state in UI
         setPosts((prevPosts: any[]) =>
           prevPosts.map(post => {
             if (post.id === postid) {

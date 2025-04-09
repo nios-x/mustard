@@ -1,7 +1,6 @@
 "use client"
 import React, {useEffect, useState, useCallback} from 'react';
 import PostContainer from "@/components/PostContainer";
-
 import { useParams } from 'next/navigation';
 
 export default function Home() {
