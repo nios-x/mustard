@@ -53,6 +53,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
     try {
         const requestData = await request.json();
+        console.log(requestData.content)
         if (!requestData.content || requestData.content.trim() === "") {
             return NextResponse.json({ response: "Post content cannot be empty" }, { status: 400 });
         }
