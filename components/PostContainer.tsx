@@ -5,8 +5,21 @@ import { useRef } from 'react';
 import Post from '@/components/Post'; // Adjust path based on your structure
 import { IoIosArrowBack } from "react-icons/io";
 import Link from 'next/link';
+import { Textarea } from './ui/textarea';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
+import { Button } from './ui/button';
 
 export default function PostContainer({isRecentPost, posts, fetchPosts,setPosts, hasMore }:{isRecentPost?:any, posts:any, setPosts:any, fetchPosts:any, hasMore:boolean}) {
+  
   const copyText = async (id:string) => {
     try {
       const text = `${new URL(window.location.href).host}/posts/${id}`;
@@ -85,6 +98,29 @@ export default function PostContainer({isRecentPost, posts, fetchPosts,setPosts,
   
   return (
     <div className="p-4 max-w-3xl mx-auto">
+    <Drawer>
+  <DrawerTrigger>Open</DrawerTrigger>
+  <DrawerContent >
+    <DrawerHeader>
+      <div className='h-[90vh]'>
+
+      <DrawerTitle>Comments</DrawerTitle>
+      <DrawerDescription>
+          <div className="pt-3"></div>
+        <Textarea  className="h-[23px] " >
+
+        </Textarea>
+        <Button className='w-full mt-2'>Submit</Button>
+      </DrawerDescription>
+      </div>
+    </DrawerHeader>
+    <DrawerFooter>
+      <DrawerClose>
+      </DrawerClose>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>
+
       <Toaster/>
       { isRecentPost &&  <div className="text-xl text-gray-700 w-full p-3 bg-white font-semibold border rounded-lg z-[50]">
         Recent Posts
