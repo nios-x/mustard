@@ -8,9 +8,7 @@ const prisma = new PrismaClient();
 export async function GET(request: Request) {
     try {
         const decodedToken = await AuthMiddleWare();
-        
         const userId = (decodedToken as JwtPayload).id;
-
         const { searchParams } = new URL(request.url);
         const page = parseInt(searchParams.get("page") || "1", 10);
         const pageSize = 10;
@@ -19,7 +17,7 @@ export async function GET(request: Request) {
             return NextResponse.json({ response: "Invalid page number" }, { status: 400 });
         }
 
-        const posts = await prisma.post.findMany({
+        const posts = await prisma.comment.findMany({
             orderBy: { createdAt: "desc" },
             skip: (page - 1) * pageSize,
             take: pageSize,
@@ -30,20 +28,10 @@ export async function GET(request: Request) {
                         username: true,
                     },
                 },
-                likes: {
-                    select: {
-                        userId: true,
-                    },
-                },
             },
         });
 
-        const enrichedPosts = posts.map(({ likes, ...rest }) => ({
-            ...rest,
-            likeCount: likes.length,
-            isLikedByCurrentUser: likes.some(like => like.userId === userId),
-        }));
-        return NextResponse.json({ response: "success", posts: enrichedPosts }, { status: 200 });
+        return NextResponse.json({ response: "success", posts: posts }, { status: 200 });
 
     } catch (error: any) {
         console.error("Error fetching posts:", error);
