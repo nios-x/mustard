@@ -114,11 +114,20 @@ export default function PostContainer({ isRecentPost, posts, fetchPosts, setPost
     const data = (await response).json();
     console.log(data)
   }
-  const getAllComments=()=>{
-    
+  const getAllComments=async()=>{
+   const response = await fetch("/api/public/comments",{
+      method:"POST",
+      body:JSON.stringify({"id":commenttid, comment:commentData}),
+      headers:{
+        "Content-Type":"application/json"
+      }
+    })
+    const data = await response.json();
+    console.log(data)   
   }
   useEffect(()=>{
-
+    if(commenttid!="")
+    getAllComments()
   },[commenttid])
   return (
     <div className="p-4 max-w-3xl mx-auto">
