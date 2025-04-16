@@ -4,7 +4,22 @@ import { PrismaClient } from "@prisma/client";
 import AuthMiddleWare from "@/lib/authmiddleware";
 
 const prisma = new PrismaClient();
-
+export async function POST(request: Request){
+    const decodedToken = await AuthMiddleWare();
+    const data = await request.json();
+    if(!decodedToken.id){throw new Error("Token error")}
+    try{
+        const comment = await prisma.comment.create({data:{
+            postId:data.id,
+            userId:decodedToken.id,
+            description:data.comment
+        }})
+        console.log(comment)
+        return NextResponse.json({comment, response:"success"})
+    }catch(e:any){
+        return NextResponse.json({response:"error", error:e.message},{status:400})
+    }
+}
 export async function GET(request: Request) {
     try {
         const decodedToken = await AuthMiddleWare();
