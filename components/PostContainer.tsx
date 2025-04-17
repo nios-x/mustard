@@ -95,7 +95,7 @@ export default function PostContainer({ isRecentPost, posts, fetchPosts, setPost
       }
     }, 300); // 300ms debounce time
   };
-  const [comment, setComment] = useState(true);
+  const [comment, setComment] = useState(false);
   const [commenttid, setCommentId] = useState("")
   const [commentData, setCommentData] = useState("")
   const setTheComment = (id:string)=>{
